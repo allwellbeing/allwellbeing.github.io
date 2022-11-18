@@ -1,0 +1,16 @@
+baseURL = 'https://allwellbeing.github.io/'
+languageCode = 'en'
+title = 'Allwellbeing'
+disableHugoGeneratorInject = true
+paginate= 15
+
+[taxonomies]
+  topic = 'topic'
+  interest = 'interest'
+  tag = 'tags'
+  author = 'author'
+  collection = 'collection'
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true

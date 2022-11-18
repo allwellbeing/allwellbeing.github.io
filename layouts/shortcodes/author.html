@@ -1,0 +1,4 @@
+<div class="Box clearfix p-3 mb-3">
+    <div class="float-left mr-3 mb-3"><img loading="lazy" class="avatar" src='{{ replace ( index .Params "img" ) "https://" "https://i0.wp.com/"  }}?w=60' alt="author image" width="60" height="60"></div>
+    <div>{{ .Inner | markdownify }}</div>
+</div>

@@ -1,0 +1,37 @@
+<footer class="footer border-top color-border-muted mt-6 ">
+    <h2 class="sr-only">Footer</h2>
+    <div class="width-full container-xl p-responsive">
+        <div class="position-relative d-flex flex-items-center pb-2 f6 color-fg-muted flex-column-reverse flex-lg-row flex-wrap flex-lg-nowrap pt-6">
+            <div class="list-style-none d-flex flex-wrap col-0 col-lg-2 flex-justify-start flex-lg-justify-between mb-2 mb-lg-0">
+                <div class="mt-2 mt-lg-0 d-flex flex-items-center">
+                    <a href="/" aria-label="Homepage" title="{{.Site.Title}}">
+                        <svg class="octicon mr-2 color-fg-muted" aria-hidden="true" width="24" height="24">
+                            <use xlink:href="#logo-allwellbeing"></use>
+                        </svg>
+                    </a>
+                    <span>© {{ dateFormat "2006" now }} {{.Site.Title}}</span>
+                </div>
+            </div>
+            <nav class="col-12 col-lg-8">
+                <h3 class="sr-only" id="sr-footer-heading">Footer Navigation</h3>
+                <ul class="list-style-none d-flex flex-wrap col-12 flex-justify-center mb-2 mb-lg-0" aria-labelledby="sr-footer-heading">
+                    <li class="mr-3">
+                        <a href="/terms/" class="no-underline">Terms</a>
+                    </li>
+                    <li class="mr-3">
+                        <a href="/privacy/" class="no-underline">Privacy</a>
+                    </li>
+                    <li class="mr-3">
+                        <a href="/sitemap/" class="no-underline">Sitemap</a>
+                    </li>
+                    <li class="mr-3">
+                        <a href="/about/" class="no-underline">About</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="d-flex flex-justify-center pb-6">
+        <span class="f6 color-fg-muted"></span>
+    </div>
+</footer>

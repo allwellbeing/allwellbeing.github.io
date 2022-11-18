@@ -1,0 +1,20 @@
+{{ define "meta" }}
+<title>{{ .Title }} &#8212; {{ .Site.Title }}</title>
+<meta name="description"
+    content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
+{{ end }}
+
+{{ define "main" }}
+<div class="clearfix px-3 px-md-4 px-lg-5">
+  <div class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
+      <div class="Layout-main">
+        <article class="mx-auto markdown-body py-3">
+        <h1>{{ .Title }}</h1>
+        <p>{{.Params.description}}</p>
+        {{ .Content }}
+      </div>
+        </article>
+      <div class="Layout-sidebar"></div>
+  </div>
+</div>
+{{ end }}

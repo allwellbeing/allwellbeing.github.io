@@ -1,0 +1,111 @@
+{{ define "meta" }}
+<title>{{ .Title }} &#8212; {{ .Site.Title }}</title>
+{{ end }}
+
+{{ define "main" }}
+
+  
+  <div class="clearfix px-3 px-md-4 px-lg-5">
+    <div class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
+      <div class="Layout-main">
+        
+        {{ range .Paginator.Pages }}
+        <article class="mx-auto py-3  border-bottom" style="max-width: 650px;">
+          <div class="pb-2">
+            {{ range .Params.topic }}
+            <a href="{{ "/topic/" | relLangURL }}{{ . | urlize }}/" class="branch-name">
+              <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon mr-1 v-align-middle color-fg-accent"><use xlink:href="#logo-tag" /></svg>{{. | title}}</a>
+            {{ end }}
+          </div>
+          <div class="d-flex flex-justify-between">
+            <a href="{{.Permalink}}" class="no-underline flex-grow-0">
+              {{ with .Params.images}}<img loading="lazy" src="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=92,92" alt="" width="92" height="92">{{ end }}
+            </a>
+            
+            <a href="{{ .Permalink }}" class="no-underline flex-1 d-flex flex-column Link--primary ml-2">
+              <h2 class="f3 lh-condensed mb-0 ">{{ .Title }}</h2>
+              <p class="f5 color-fg-muted lh-condensed" style="overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">{{.Description }}</p>
+            </a>
+          </div>
+          <div class="d-flex flex-justify-between">
+            <div class="d-flex flex-items-center">
+              {{ range .Params.author}}
+              {{- with $.Site.GetPage "taxonomyTerm" (printf "author/%s" (urlize .)) }}
+                <address class="v-align-middle d-inline-flex mr-2 flex-items-center">
+                  {{ with .Params.images }}
+                  <img loading="lazy" src="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=64,64" alt="" width="16" height="16" class="avatar avatar-2 mr-1">
+                  {{ else }}
+                  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon mr-1 v-align-middle color-fg-muted"><use xlink:href="#logo-account-circle" /></svg>
+                  {{ end }}
+                  <a  href="{{ .Permalink }}" class="color-fg-muted">{{ .Title | title}}</a>
+                </address>
+              {{ end }}
+              {{ end }}
+            </div>
+            <div>
+              <details class="dropdown details-reset details-overlay d-inline-block">
+                <summary class="btn-octicon" aria-haspopup="true" type="button" aria-label="Share">
+                  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon mr-1 v-align-middle color-fg-muted"><use xlink:href="#logo-share" /></svg>
+                </summary>
+            
+                <div class="dropdown-menu dropdown-menu-sw">
+                  <div class="dropdown-header">Share</div>
+                  <ul>
+                    <li>
+                      <a class="dropdown-item" href="#url">
+                        <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                        version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                        <use xlink:href="#logo-twitter" />
+                        </svg>
+                        <span class="v-align-middle">Twitter</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#url">
+                        <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                        version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                        <use xlink:href="#logo-facebook" />
+                        </svg>
+                        <span class="v-align-middle">Facebook</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#url">
+                        <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                        version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                        <use xlink:href="#logo-copy-link" />
+                        </svg>
+                        <span class="v-align-middle">Copy Link</span>
+
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </div>
+        </article>
+        {{ end }}
+        {{ $paginator := .Paginator }}
+        <nav class="paginate-container" aria-label="Pagination">
+          <div class="pagination">
+            {{ if $paginator.HasPrev }}
+            <a class="previous_page" href="{{ $paginator.Prev.URL }}" rel="previous" aria-label="Previous Page">Previous</a>
+            {{ else }}
+            <span class="previous_page" aria-disabled="true" style="opacity: 0;">Previous</span>
+            {{ end }}
+            {{ if $paginator.HasNext }}
+            <a class="next_page" rel="next" href="{{ $paginator.Next.URL }}" aria-label="Next Page">Next</a>
+            {{ else }}
+            <span class="next_page" aria-disabled="true" style="opacity: 0;">Next</span>
+            {{ end }}
+            
+          </div>
+        </nav>
+      </div>
+      <div class="Layout-sidebar"></div>
+    </div>
+  </div>
+
+
+{{ end }}

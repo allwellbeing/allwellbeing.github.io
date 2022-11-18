@@ -1,0 +1,78 @@
+{{ define "meta" }}
+<title>{{ .Title }} &#8212; {{ .Site.Title }}</title>
+<meta itemprop="name" content="{{ .Title }}">
+<meta name="description"
+    content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
+{{ end }}
+
+{{ define "main" }}
+<div class="clearfix px-3 px-md-4 px-lg-5 mt-4">
+    <div
+        class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
+        <div class="Layout-main">
+            <article class="markdown-body f4-mktg mx-auto" style="max-width: 590px;">
+                <header>
+                    <div>
+                        <div class="color-fg-muted f5 mb-2">
+                            <span>Published: <time class="op-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-MST"  }}">{{ .Date.Format "Monday, Jan 2, 2006" }}</time></span>
+                            <span class="d-none">Modified: <time class="op-modified" datetime="{{ .Lastmod.Format "2006-01-02T15:04:05-MST"  }}">{{ .Lastmod.Format "Monday, Jan 2, 2006" }}</time></span>
+                        </div>
+                        {{ range .Params.topic }}{{ end }}
+                        <ul class="pl-0 mb-0 list-style-none clearfix">
+                            {{ range .Params.interest }}
+                            <li class="float-left mt-0 mr-2 mb-1">
+                                <a href="{{ "/interest/" | relLangURL }}{{ . | urlize }}/" class="btn btn-outline" type="button">
+                                    <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6Z" /></svg>
+                                    <span>{{ . }}</span>
+                                </a>
+                            </li>
+                            {{ end }}
+                            {{ range .Params.topic }}
+                            <li class="float-left mt-0 mr-2 mb-1"><a href="{{ "/topic/" | relLangURL }}{{ . | urlize }}/" class="btn btn-outline" type="button">{{ . | title }}</a></li>
+                            {{ end }}
+                            {{ range .Params.tags }}
+                            <li class="float-left mt-0 mr-2 mb-1"><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="btn btn-outline" type="button">{{ . | title }}</a></li>
+                            {{ end }}
+                        </ul>
+                    </div>
+                    <h1 class="h3-mktg">{{ .Title | title | markdownify}}</h1>
+                    {{ with $.Params.description}}<p class="op-kicker f3">{{. | markdownify}}</p>{{end}}
+                    {{ with $.Params.images}}
+                    <figure class="mx-0">
+                        <picture class="mx-auto">
+                            <!-- ratio resize for 320px and 2 ratio -->
+                            <source srcset="{{ replace ( index . 0 ) " https://" "https://i0.wp.com/" }}?w=640 640w"
+                                media="(max-width: 320px) and (-webkit-min-device-pixel-ratio: 2), (max-width: 320px) and (min-resolution: 192dpi)">
+                            <!-- resize for 320px -->
+                            <source srcset="{{ replace ( index . 0 ) " https://" "https://i0.wp.com/" }}?w=320 320w"
+                                media="(max-width: 320px)">
+                            <!-- ratio resize for 400px and 2 ratio -->
+                            <source srcset="{{ replace ( index . 0 ) " https://" "https://i0.wp.com/" }}?w=800 800w"
+                                media="(max-width: 400px) and (-webkit-min-device-pixel-ratio: 2), (max-width: 400px) and (min-resolution: 192dpi)">
+                            <!-- resize for 400px -->
+                            <source srcset="{{ replace ( index . 0 ) " https://" "https://i0.wp.com/" }}?w=400 400w"
+                                media="(max-width: 400px)">
+                            <!-- ratio resize for 500px and 2 ratio -->
+                            <source srcset="{{ replace ( index . 0 ) " https://" "https://i0.wp.com/" }}?w=1010 1010w"
+                                media="(max-width: 640px) and (-webkit-min-device-pixel-ratio: 2), (max-width: 640px) and (min-resolution: 192dpi)">
+                            <!-- resize for 500px -->
+                            <source srcset="{{ replace ( index . 0 ) " https://" "https://i0.wp.com/" }}?w=500 500w"
+                                media="(max-width: 640px)">
+                            <!-- resize for 590px -->
+                            <source srcset='{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?w=590 590w'>
+                            <!-- original size -->
+                            <img src='{{ replace ( index . 0 ) "https://" "https://i0.wp.com/"  }}' width="1180"
+                                height="730" {{ with $.Params.caption}}alt="{{.}}" {{end}} loading="auto"
+                                class="height-auto ">
+                        </picture>
+                        {{ with $.Params.caption}}<figcaption class="color-fg-muted f5">{{.}}</figcaption>{{end}}
+                    </figure>
+                    {{ end }}
+                </header>
+                {{ .Content }}
+            </article>
+        </div>
+        <div class="Layout-sidebar"></div>
+    </div>
+</div>
+{{ end }}

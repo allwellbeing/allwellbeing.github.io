@@ -1,0 +1,49 @@
+{{ define "meta" }}
+<title>{{ .Title }} &#8212; {{ .Site.Title }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
+{{ end }}
+
+{{ define "main" }}
+<div class="clearfix px-3 px-md-4 px-lg-5">
+    <div class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
+        <div class="Layout-main">
+            <article class="mx-auto py-3" style="max-width: 650px;">
+                <h1>{{.Title | title }}</h1>
+                <p>{{ .Params.description }}</p>
+                <h2 class="my-3">List of Interests</h2>
+                <ul class="list-style-none clearfix">
+                    {{ range $key, $taxonomy := .Site.Taxonomies.interest }}
+                    <li class="float-left"><a class="btn mr-2 mb-2" href="/interest/{{ $key | urlize}}/" aria-label="Interest: {{ $key }}">{{ $key | humanize | title }}</a></li>
+                    {{ end }}
+                </ul>
+                <h2 class="my-3">List of Topics</h2>
+                <ul class="list-style-none clearfix">
+                    {{ range $key, $taxonomy := .Site.Taxonomies.topic }}
+                    <li class="float-left"><a class="btn mr-2 mb-2" href="/topic/{{ $key | urlize}}/" aria-label="Topic: {{ $key }}">{{ $key | humanize | title }}</a></li>
+                    {{ end }}
+                </ul>
+                <h2 class="my-3">List of Collection</h2>
+                <ul class="list-style-none">
+                    {{ range $key, $taxonomy := .Site.Taxonomies.collection }}
+                    <li><a href="/collection/{{ $key | urlize}}/" aria-label="Collection: {{ $key }}">{{ $key | humanize | title }}</a></li>
+                    {{ end }}
+                </ul>
+                <h2>Latest 500 Articles</h2>
+                <ul class="ActionList ActionList--divided p-0" >
+                {{ range first 500 (where .Site.Pages "Section" "news") }}
+                    {{ range .Pages }}
+                        <li class="ActionList-item">
+                            <a class="ActionList-content ActionList-content--sizeMedium" href="{{.Permalink}}">
+                                <span class="ActionList-item-label">{{ .Title | title }}</span>
+                            </a>
+                        </li>
+                    {{ end }}
+                {{ end }}
+                </ul>
+            </article>
+        </div>
+        <div class="Layout-sidebar">
+        </div>
+    </div>
+</div>
+{{ end }}
