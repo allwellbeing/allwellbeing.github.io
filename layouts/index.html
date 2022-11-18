@@ -1,5 +1,6 @@
 {{ define "meta" }}
 <title>{{ .Title }} &#8212; {{ .Site.Title }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
 {{ end }}
 
 {{ define "main" }}
@@ -18,8 +19,8 @@
             {{ end }}
           </div>
           <div class="d-flex flex-justify-between">
-            <a href="{{.Permalink}}" class="no-underline flex-grow-0">
-              {{ with .Params.images}}<img loading="lazy" src="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=92,92" alt="" width="92" height="92">{{ end }}
+            <a href="{{.Permalink}}" class="no-underline flex-grow-0" aria-label="Read more: {{.Title}}">
+              {{ with .Params.images}}<img loading="lazy" src="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=184,184" alt="" width="92" height="92">{{ end }}
             </a>
             
             <a href="{{ .Permalink }}" class="no-underline flex-1 d-flex flex-column Link--primary ml-2">
@@ -52,7 +53,7 @@
                   <div class="dropdown-header">Share</div>
                   <ul>
                     <li>
-                      <a class="dropdown-item" href="#url">
+                      <a class="dropdown-item" href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" aria-label="Share on Twitter">
                         <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
                         version="1.1" width="16" class="octicon mr-1 v-align-middle">
                         <use xlink:href="#logo-twitter" />
@@ -61,7 +62,7 @@
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#url">
+                      <a class="dropdown-item" href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" aria-label="Share on Facebook">
                         <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
                         version="1.1" width="16" class="octicon mr-1 v-align-middle">
                         <use xlink:href="#logo-facebook" />
@@ -70,13 +71,12 @@
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#url">
+                      <a class="dropdown-item" href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" aria-label="Share by email">
                         <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
                         version="1.1" width="16" class="octicon mr-1 v-align-middle">
-                        <use xlink:href="#logo-copy-link" />
+                        <use xlink:href="#logo-email" />
                         </svg>
-                        <span class="v-align-middle">Copy Link</span>
-
+                        <span class="v-align-middle">Email</span>
                       </a>
                     </li>
                   </ul>
