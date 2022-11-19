@@ -3,7 +3,7 @@ title: "About Us"
 description: "Allwellbeing is an independent journalist & organization dedicated to provide useful quality content for all audience."
 ---
 
-Allwellbeing is an independent journalist & organization dedicated to provide useful quality content for all audience. 
+Allwellbeing is an independent journalist & organization from Ukraine dedicated to provide useful quality content for all audience. 
 
 We believe well-being is not limited to health, but also emotion, mental, physical, psychology, and all rounded of our life.
 

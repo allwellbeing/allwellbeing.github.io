@@ -46,7 +46,7 @@ To find out what personal data we collect and how we use it, please visit our pr
 
 ## Access to the Site
 
-The site is made available free of charge. Allwellbeing makes no representation that materials on this site are appropriate or available for use at other locations outside the State of Qatar and access to them from territories where their contents are illegal is prohibited. If you access this site from a location outside the State of Qatar, you are responsible for compliance with all local laws.
+The site is made available free of charge. Allwellbeing makes no representation that materials on this site are appropriate or available for use at other locations outside Ukraine and access to them from territories where their contents are illegal is prohibited. If you access this site from a location outside Ukraine, you are responsible for compliance with all local laws.
 
 Allwellbeing may suspend, terminate, withdraw, or restrict the availability of all or any part of the site without notice and for any or no reason.
 
@@ -90,6 +90,6 @@ You understand that when using this site, you may be exposed to User Submissions
 
 ## Law and Jurisdiction
 
-These Terms and Conditions shall be governed by and construed in accordance with the laws of the State of Qatar. Disputes arising in connection with these Terms and Conditions, and any use of the site, shall be exclusively subject to the jurisdiction of the Qatari courts. Any cause of action you may have with respect to these Terms and Conditions, and any use of this site, must be commenced within one (1) year after the claim or cause of action arises.
+These Terms and Conditions shall be governed by and construed in accordance with the laws of the Ukraine. Disputes arising in connection with these Terms and Conditions, and any use of the site, shall be exclusively subject to the jurisdiction of the The Supreme Court of Ukraine. Any cause of action you may have with respect to these Terms and Conditions, and any use of this site, must be commenced within one (1) year after the claim or cause of action arises.
 
 If any portion of these Terms and Conditions should be determined to be illegal, invalid or otherwise unenforceable by reason of the law of any state or country in which these Terms and Conditions are intended to be effective, then to the extent and within the jurisdiction in which that portion of these Terms and Conditions is illegal, invalid or unenforceable, it shall be deemed to be severed and deleted from that clause and the remaining potions of these Terms and Conditions shall survive and continue to be binding and enforceable.

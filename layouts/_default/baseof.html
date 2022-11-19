@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{with $.Params.lang}}{{.}}{{else}}en{{end}}">
+<html{{ with site.LanguageCode | default site.Language.Lang }} lang="{{ . }}"{{ end }}>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="{{ .Permalink }}">
     {{ block "meta" . }}{{ end }}
     <link href="/site.webmanifest" rel="manifest">
     <link rel="shortcut icon" href="/favicon.ico">
@@ -14,6 +15,7 @@
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/@primer/css@20.6.0/dist/primer.css" as="style"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@primer/css@20.6.0/dist/primer.css">
     <meta name="google-site-verification" content="DmlywITDushGc6Vu8fbK4Ur7M9GCpgiN7aPWRGso9Hg" />
+    <meta name="robots" content="notranslate">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DZK5V51MWP"></script>
     <script>
       window.dataLayer = window.dataLayer || [];

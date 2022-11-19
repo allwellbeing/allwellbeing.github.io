@@ -5,8 +5,12 @@
 
 {{ define "main" }}
 
-  
   <div class="clearfix px-3 px-md-4 px-lg-5">
+    <div itemscope itemtype="https://schema.org/WebSite">
+      <meta itemprop="url" content="{{.Permalink}}"/>
+      <meta itemprop="name" content="{{.Site.Title}}"/>
+      <meta itemprop="alternateName" content="+Well"/>
+    </div>
     <div class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
       <div class="Layout-main">
         

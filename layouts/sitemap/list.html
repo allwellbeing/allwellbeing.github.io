@@ -23,12 +23,16 @@
                     {{ end }}
                 </ul>
                 <h2 class="my-3">List of Collection</h2>
-                <ul class="list-style-none">
+                <ul class="ActionList ActionList--divided p-0">
                     {{ range $key, $taxonomy := .Site.Taxonomies.collection }}
-                    <li><a href="/collection/{{ $key | urlize}}/" aria-label="Collection: {{ $key }}">{{ $key | humanize | title }}</a></li>
+                    <li class="ActionList-item">
+                        <a class="ActionList-content ActionList-content--sizeMedium" href="/collection/{{ $key | urlize}}/" aria-label="Collection: {{ $key }}">
+                           <span class="ActionList-item-label">{{ $key | humanize | title }}</span>
+                        </a>
+                    </li>
                     {{ end }}
                 </ul>
-                <h2>Latest 500 Articles</h2>
+                <h2 class="my-3">Latest 500 Articles</h2>
                 <ul class="ActionList ActionList--divided p-0" >
                 {{ range first 500 (where .Site.Pages "Section" "news") }}
                     {{ range .Pages }}

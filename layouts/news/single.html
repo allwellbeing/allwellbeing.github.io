@@ -1,8 +1,41 @@
 {{ define "meta" }}
-<title>{{ .Title }} &#8212; {{ .Site.Title }}</title>
-<meta itemprop="name" content="{{ .Title }}">
-<meta name="description"
-    content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
+<title>{{ .Title }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
+<meta property="og:title" content="{{ .Title }}" />
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="{{ .Permalink }}" />
+{{- with $.Params.images }}<meta property="og:image" content="{{ index . 0 | absURL }}"/>{{ end -}}
+{{ range .Params.interest }}<meta property="article:section" content="{{ . | title }}" />{{ end }}
+<meta property="article:published_time" content="{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}" />
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}" />
+<meta property="og:locale" content="en" />
+<meta property="og:site_name" content="{{ .Site.Title }}" />
+{{- with $.Params.images -}}
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="{{ index . 0 | absURL }}"/>
+{{ else -}}
+{{- $images := $.Resources.ByType "image" -}}
+{{- $featured := $images.GetMatch "*feature*" -}}
+{{- if not $featured }}{{ $featured = $images.GetMatch "{*cover*,*thumbnail*}" }}{{ end -}}
+{{- with $featured -}}
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="{{ $featured.Permalink }}"/>
+{{- else -}}
+{{- with $.Site.Params.images -}}
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="{{ index . 0 | absURL }}"/>
+{{ else -}}
+<meta name="twitter:card" content="summary"/>
+{{- end -}}
+{{- end -}}
+{{- end }}
+<meta name="twitter:title" content="{{ .Title }}"/>
+<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end -}}"/>
+{{ with .Site.Social.twitter -}}
+<meta name="twitter:site" content="@{{ . }}"/>
+{{ end -}}
+
 {{ end }}
 
 {{ define "main" }}
@@ -10,36 +43,70 @@
     <div
         class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
         <div class="Layout-main">
-            <article class="markdown-body f4-mktg mx-auto" style="max-width: 590px;">
+            <article class="markdown-body f4-mktg mx-auto" style="max-width: 590px;" itemscope itemtype="https://schema.org/NewsArticle">
+                {{ range .Params.interest }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
+                {{ range .Params.topic }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
+                {{ range .Params.tags }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
                 <header>
                     <div>
-                        <div class="color-fg-muted f5 mb-2">
-                            <span>Published: <time class="op-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-MST"  }}">{{ .Date.Format "Monday, Jan 2, 2006" }}</time></span>
-                            <span class="d-none">Modified: <time class="op-modified" datetime="{{ .Lastmod.Format "2006-01-02T15:04:05-MST"  }}">{{ .Lastmod.Format "Monday, Jan 2, 2006" }}</time></span>
+                        <div class="color-fg-muted f5">
+                            <span class="sr-only" itemprop="timeRequired" content="PT{{ math.Round (div (countwords .Content) 220.0) }}M">Reading time: {{ math.Round (div (countwords .Content) 220.0) }} minutes.</span>
+                            <span class="sr-only">Wordcount: <span itemprop="wordCount">{{ .WordCount }}</span></span>
+                            <span>Published: <time itemprop="datePublished" content="{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}" class="op-published" datetime="{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}">{{ .Date.Format "Monday, Jan 2, 2006" }}</time></span>
+                            <span class="d-none">Modified: <time itemprop="dateModified" content="{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}" class="op-modified" datetime="{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}">{{ .Lastmod.Format "Monday, Jan 2, 2006" }}</time></span>
                         </div>
-                        {{ range .Params.topic }}{{ end }}
-                        <ul class="pl-0 mb-0 list-style-none clearfix">
-                            {{ range .Params.interest }}
-                            <li class="float-left mt-0 mr-2 mb-1">
-                                <a href="{{ "/interest/" | relLangURL }}{{ . | urlize }}/" class="btn btn-outline" type="button">
-                                    <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6Z" /></svg>
-                                    <span>{{ . }}</span>
+                        <nav aria-label="Breadcrumb">
+                            <ol class="list-style-none pl-0 mb-0" itemscope itemtype="https://schema.org/BreadcrumbList">
+                                <li class="sr-only">
+                                    <a href="/" aria-label="Go to homepage">Home</a>
+                                </li>
+                                {{ range .Params.interest }}
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                    <a href="{{ "/interest/" | relLangURL }}{{ . | urlize }}/" itemprop="item" aria-label="article section" class=" Truncate">
+                                        <span itemprop="name" class="Truncate-text">{{ . | title }}</span>
+                                        <meta itemprop="position" content="1" />
+                                    </a>
+                                </li>{{ end }}
+                                <li class="sr-only">
+                                    <a href="{{.Permalink}}" aria-current="page">{{.Title |title}}</a>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="h3-mktg mt-0" itemprop="headline">{{ .Title | title | markdownify}}</h1>
+                    
+                    {{ with $.Params.description}}<p class="op-kicker f3">{{. | markdownify}}</p>{{end}}
+
+                    <aside class="my-3">
+                        <div class="sr-only">Share this article:</div>
+                        <ul class="list-style-none pl-0 mb-0">
+                            <li class="d-inline-block mt-0">
+                                <a href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" class="btn" aria-label="Share on Twitter">
+                                    <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-twitter" /></svg> 
+                                    <span class="v-align-middle">Twitter</span>
                                 </a>
                             </li>
-                            {{ end }}
-                            {{ range .Params.topic }}
-                            <li class="float-left mt-0 mr-2 mb-1"><a href="{{ "/topic/" | relLangURL }}{{ . | urlize }}/" class="btn btn-outline" type="button">{{ . | title }}</a></li>
-                            {{ end }}
-                            {{ range .Params.tags }}
-                            <li class="float-left mt-0 mr-2 mb-1"><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="btn btn-outline" type="button">{{ . | title }}</a></li>
-                            {{ end }}
+                            <li class="d-inline-block mt-0">
+                                <a href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Share on Facebook">
+                                    <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-facebook" /></svg> 
+                                    <span class="v-align-middle">Facebook</span>
+                                </a>                                
+                            </li>
+                            <li class="d-inline-block mt-0">
+                                <a href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Email this article">
+                                    <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-email" /></svg> 
+                                    <span class="v-align-middle">Email</span>
+                                </a>                                
+                            </li>
                         </ul>
-                    </div>
-                    <h1 class="h3-mktg">{{ .Title | title | markdownify}}</h1>
-                    {{ with $.Params.description}}<p class="op-kicker f3">{{. | markdownify}}</p>{{end}}
+                    </aside>
                     {{ with $.Params.images}}
                     <figure class="mx-0">
                         <picture class="mx-auto">
+                            <meta itemprop="image" content="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=1000,1000"/>
+                            <meta itemprop="image" content="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=1024,768"/>
+                            <meta itemprop="image" content="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=1280,720"/>
+                            <meta itemprop="image" content="{{ index . 0 }}"/>
                             <!-- ratio resize for 320px and 2 ratio -->
                             <source srcset="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?w=640 640w"
                                 media="(max-width: 320px) and (-webkit-min-device-pixel-ratio: 2), (max-width: 320px) and (min-resolution: 192dpi)">
@@ -69,7 +136,81 @@
                     </figure>
                     {{ end }}
                 </header>
+                
                 {{ .Content }}
+
+                <div class="author my-3">
+                    {{ with .Params.author }}
+                        <h4 class="sr-only">Author</h4>
+                    {{ end }}
+                    {{range .Params.author}}
+                    {{- with $.Site.GetPage "taxonomyTerm" (printf "author/%s" (urlize .)) }}
+                        <address itemprop="author" itemscope itemtype="https://schema.org/Person" class="v-align-middle d-inline-flex mr-2 flex-items-center">
+                        {{ with .Params.images }}
+                        <img loading="lazy" src="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=64,64" alt="" width="16" height="16" class="avatar avatar-2 mr-1">
+                        {{ else }}
+                        <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon mr-1 v-align-middle color-fg-muted"><use xlink:href="#logo-account-circle" /></svg>
+                        {{ end }}
+                        <a itemprop="url" content="{{ .Permalink }}" href="{{ .Permalink }}" class="color-fg-muted">
+                            <span itemprop="name">{{ .Title | title}}</span></a>
+                        </address>
+                        {{ end }}
+                        {{end}}
+                </div>
+                <div class="tags">
+                    <h4 class="sr-only">Topics, tags, and collection</h4>
+                    <ul class="pl-0 mb-0 list-style-none clearfix">
+                        {{ range .Params.topic }}
+                        <li class="float-left mt-0 mr-1 mb-1 Truncate">
+                            <a href="{{ "/topic/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article topic quick link">
+                                <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-tag"></use></svg>
+                                <span class="v-align-middle">{{ . | title }}</span>
+                            </a>
+                        </li>
+                        {{ end }}
+                        {{ range .Params.tags }}
+                        <li class="float-left mt-0 mr-1 mb-1 Truncate">
+                            <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article tag quick link">
+                                <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-tag"></use></svg>
+                                <span class="v-align-middle">{{ . | title }}</span>
+                            </a>
+                        </li>
+                        {{ end }}
+                    </ul>
+                    <ul class="pl-0 mb-0 list-style-none clearfix">
+                        {{ range .Params.collection }}
+                        <li class="float-left mt-0 mr-1 mb-1 Truncate">
+                            <a href="{{ "/collection/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article collection quick link">
+                                <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-collection"></use></svg>
+                                <span class="v-align-middle ">{{ . | title }}</span>
+                            </a>
+                        </li>
+                        {{ end }}
+                    </ul>
+                </div>
+                <aside class="my-3">
+                    <div >Share this article:</div>
+                    <ul class="list-style-none pl-0 mb-0">
+                        <li class="d-inline-block mt-0">
+                            <a href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" class="btn" aria-label="Share on Twitter">
+                                <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-twitter" /></svg> 
+                                <span class="v-align-middle">Twitter</span>
+                            </a>
+                        </li>
+                        <li class="d-inline-block mt-0">
+                            <a href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Share on Facebook">
+                                <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-facebook" /></svg> 
+                                <span class="v-align-middle">Facebook</span>
+                            </a>                                
+                        </li>
+                        <li class="d-inline-block mt-0">
+                            <a href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Email this article">
+                                <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-email" /></svg> 
+                                <span class="v-align-middle">Email</span>
+                            </a>                                
+                        </li>
+                    </ul>
+                </aside>
             </article>
         </div>
         <div class="Layout-sidebar"></div>
