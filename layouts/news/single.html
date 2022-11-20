@@ -133,20 +133,20 @@
 
                     <aside class="my-3">
                         <div class="sr-only">Share this article:</div>
-                        <ul class="list-style-none pl-0 mb-0">
-                            <li class="d-inline-block mt-0 mr-2 mb-2">
+                        <ul class="list-style-none pl-0 mb-0 clearfix">
+                            <li class="float-left mt-0 mr-2 mb-2">
                                 <a href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" class="btn" aria-label="Share on Twitter">
                                     <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-twitter" /></svg> 
                                     <span class="v-align-middle">Twitter</span>
                                 </a>
                             </li>
-                            <li class="d-inline-block mt-0 mr-2 mb-2">
+                            <li class="float-left mt-0 mr-2 mb-2">
                                 <a href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Share on Facebook">
                                     <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-facebook" /></svg> 
                                     <span class="v-align-middle">Facebook</span>
                                 </a>                                
                             </li>
-                            <li class="d-inline-block mt-0 mr-2 mb-2">
+                            <li class="float-left mt-0 mr-2 mb-2">
                                 <a href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Email this article">
                                     <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-email" /></svg> 
                                     <span class="v-align-middle">Email</span>
@@ -215,7 +215,7 @@
                     <h3 class="sr-only">Section, topics, tags, and collection</h3>
                     <ul class="pl-0 mb-0 list-style-none clearfix">
                         {{ range .Params.interest }}
-                        <li class="float-left mt-0  mr-2 mb-2 Truncate">
+                        <li class="float-left mt-0 mr-2 mb-2 Truncate">
                             <a href="{{ "/interest/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article topic quick link">
                                 <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-folder"></use></svg>
                                 <span class="v-align-middle">{{ . | title }}</span>
@@ -223,7 +223,7 @@
                         </li>
                         {{ end }}
                         {{ range .Params.topic }}
-                        <li class="float-left mt-0  mr-2 mb-2 Truncate">
+                        <li class="float-left mt-0 mr-2 mb-2 Truncate">
                             <a href="{{ "/topic/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article topic quick link">
                                 <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-tag"></use></svg>
                                 <span class="v-align-middle">{{ . | title }}</span>
@@ -231,7 +231,7 @@
                         </li>
                         {{ end }}
                         {{ range .Params.tags }}
-                        <li class="float-left mt-0  mr-2 mb-2 Truncate">
+                        <li class="float-left mt-0 mr-2 mb-2 Truncate">
                             <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article tag quick link">
                                 <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-tag"></use></svg>
                                 <span class="v-align-middle">{{ . | title }}</span>
@@ -241,7 +241,7 @@
                     </ul>
                     <ul class="pl-0 mb-0 list-style-none clearfix">
                         {{ range .Params.collection }}
-                        <li class="float-left mt-0  mr-2 mb-2 Truncate">
+                        <li class="float-left mt-0 mr-2 mb-2 Truncate">
                             <a href="{{ "/collection/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article collection quick link">
                                 <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-collection"></use></svg>
                                 <span class="v-align-middle ">{{ . | title }}</span>
@@ -252,20 +252,20 @@
                 </div>
                 <aside class="my-3">
                     <div class="mb-2">Share this article:</div>
-                    <ul class="list-style-none pl-0 mb-0">
-                        <li class="d-inline-block mt-0">
+                    <ul class="list-style-none pl-0 mb-0 clearfix">
+                        <li class="float-left mt-0 mr-2 mb-2">
                             <a href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" class="btn" aria-label="Share on Twitter">
                                 <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-twitter" /></svg> 
                                 <span class="v-align-middle">Twitter</span>
                             </a>
                         </li>
-                        <li class="d-inline-block mt-0">
+                        <li class="float-left mt-0 mr-2 mb-2">
                             <a href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Share on Facebook">
                                 <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-facebook" /></svg> 
                                 <span class="v-align-middle">Facebook</span>
                             </a>                                
                         </li>
-                        <li class="d-inline-block mt-0">
+                        <li class="float-left mt-0 mr-2 mb-2">
                             <a href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Email this article">
                                 <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-email" /></svg> 
                                 <span class="v-align-middle">Email</span>

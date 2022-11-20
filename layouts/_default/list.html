@@ -20,7 +20,7 @@
       <ol  itemscope itemtype="https://schema.org/BreadcrumbList" class="Truncate">
         {{ range $.Scratch.Get "breadcrumb" }}
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item {{ if lt .position 3 }}Truncate-text--primary{{ end }} {{ if eq .position 3 }} breadcrumb-item-selected{{ end }} Truncate-text ">
-          <a href="{{ .url }}" itemprop="item" class="Truncate-text" {{ if eq .position 3 }}aria-current="page" style="pointer-events:none"{{ end }}>
+          <a href="{{ .url }}" itemprop="item" class="Truncate-text" {{ if eq .position 3 }}aria-current="page" style="pointer-events:none"{{ end }} aria-label="Navigate to {{ .name | title}}">
             {{ if le .position 1 }}
             <svg aria-hidden="true" class="octicon" width="18" height="18">
               <use xlink:href="#logo-house" />
@@ -118,9 +118,44 @@
                 {{ end }}
               </div>
               <div>
-                <button class="btn-octicon" type="button" aria-label="Share">
-                  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon mr-1 v-align-middle color-fg-muted"><use xlink:href="#logo-share" /></svg>
-                </button>
+                <details class="dropdown details-reset details-overlay d-inline-block">
+                  <summary class="btn-octicon" aria-haspopup="true" type="button" aria-label="Share">
+                    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon mr-1 v-align-middle color-fg-muted"><use xlink:href="#logo-share" /></svg>
+                  </summary>
+              
+                  <div class="dropdown-menu dropdown-menu-sw">
+                    <div class="dropdown-header">Share</div>
+                    <ul>
+                      <li>
+                        <a class="dropdown-item" href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" aria-label="Share on Twitter">
+                          <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                          version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                          <use xlink:href="#logo-twitter" />
+                          </svg>
+                          <span class="v-align-middle">Twitter</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                          <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                          version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                          <use xlink:href="#logo-facebook" />
+                          </svg>
+                          <span class="v-align-middle">Facebook</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" aria-label="Share by email">
+                          <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                          version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                          <use xlink:href="#logo-email" />
+                          </svg>
+                          <span class="v-align-middle">Email</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </details>
               </div>
             </div>
           </article>
