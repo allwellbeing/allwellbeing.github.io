@@ -39,11 +39,82 @@
 {{ end }}
 
 {{ define "main" }}
-<div class="clearfix px-3 px-md-4 px-lg-5 mt-4">
+<div class="position-sticky top-0 color-bg-inset border-bottom py-1" style="z-index: 2;">
+    <nav aria-label="Breadcrumb" class="f4  pl-3 pl-md-4 pl-lg-5 d-flex flex-items-center flex-justify-between" >
+        <ol  itemscope itemtype="https://schema.org/BreadcrumbList" class="Truncate">
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item Truncate-text Truncate-text--primary">
+            <a href="/" itemprop="item">
+                <svg aria-hidden="true" class="octicon" width="18" height="18">
+                    <use xlink:href="#logo-house" />
+                </svg>
+                <span itemprop="name" class="d-none d-lg-inline-block">Home</span>
+                <meta itemprop="position" content="1" />
+            </a>
+          </li>
+          {{ range .Params.interest }}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item Truncate-text Truncate-text--primary">
+              <a href="{{ "/interest/" | relLangURL }}{{ . | urlize }}/" itemprop="item" aria-label="article section" class="Truncate-text">
+                  <span itemprop="name">{{ . | title }}</span>
+                  <meta itemprop="position" content="2" />
+              </a>
+          </li>{{ end }}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item breadcrumb-item-selected Truncate-text">
+            <a href="#article" aria-current="page" style="pointer-events:none">
+                <span itemprop="name">{{ .Title | title}}</span>
+                <meta itemprop="position" content="3" />                  
+            </a>
+          </li>
+        </ol>
+        <div class="position-relative">
+            <details class="dropdown details-reset details-overlay d-inline-block">
+                    <summary class="btn-octicon pr-4" aria-haspopup="true" type="button" aria-label="Share">
+                      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon color-fg-accent"><use xlink:href="#logo-share" /></svg>
+                    </summary>
+                
+                    <div class="dropdown-menu dropdown-menu-w">
+                      <div class="dropdown-header">Share</div>
+                      <ul>
+                        <li>
+                          <a class="dropdown-item" href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" aria-label="Share on Twitter">
+                            <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                            version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                            <use xlink:href="#logo-twitter" />
+                            </svg>
+                            <span class="v-align-middle">Twitter</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                            <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                            version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                            <use xlink:href="#logo-facebook" />
+                            </svg>
+                            <span class="v-align-middle">Facebook</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" aria-label="Share by email">
+                            <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                            version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                            <use xlink:href="#logo-email" />
+                            </svg>
+                            <span class="v-align-middle">Email</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </details>
+        </div>
+    </nav>
+</div>
+
+<div class="clearfix px-3 px-md-4 px-lg-5">
     <div
         class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
         <div class="Layout-main">
-            <article class="markdown-body f4-mktg mx-auto" style="max-width: 590px;" itemscope itemtype="https://schema.org/NewsArticle">
+            
+            
+            <article id="article" class="markdown-body pt-3 f4-mktg mx-auto" style="max-width: 590px;" itemscope itemtype="https://schema.org/NewsArticle">
                 {{ range .Params.interest }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
                 {{ range .Params.topic }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
                 {{ range .Params.tags }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
@@ -55,23 +126,6 @@
                             <span>Published: <time itemprop="datePublished" content="{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}" class="op-published" datetime="{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}">{{ .Date.Format "Monday, Jan 2, 2006" }}</time></span>
                             <span class="d-none">Modified: <time itemprop="dateModified" content="{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}" class="op-modified" datetime="{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}">{{ .Lastmod.Format "Monday, Jan 2, 2006" }}</time></span>
                         </div>
-                        <nav aria-label="Breadcrumb">
-                            <ol class="list-style-none pl-0 mb-0" itemscope itemtype="https://schema.org/BreadcrumbList">
-                                <li class="sr-only">
-                                    <a href="/" aria-label="Go to homepage">Home</a>
-                                </li>
-                                {{ range .Params.interest }}
-                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                    <a href="{{ "/interest/" | relLangURL }}{{ . | urlize }}/" itemprop="item" aria-label="article section" class=" Truncate">
-                                        <span itemprop="name" class="Truncate-text">{{ . | title }}</span>
-                                        <meta itemprop="position" content="1" />
-                                    </a>
-                                </li>{{ end }}
-                                <li class="sr-only">
-                                    <a href="{{.Permalink}}" aria-current="page">{{.Title |title}}</a>
-                                </li>
-                            </ol>
-                        </nav>
                     </div>
                     <h1 class="h3-mktg mt-0" itemprop="headline">{{ .Title | title | markdownify}}</h1>
                     
@@ -80,19 +134,19 @@
                     <aside class="my-3">
                         <div class="sr-only">Share this article:</div>
                         <ul class="list-style-none pl-0 mb-0">
-                            <li class="d-inline-block mt-0">
+                            <li class="d-inline-block mt-0 mr-2 mb-2">
                                 <a href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" class="btn" aria-label="Share on Twitter">
                                     <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-twitter" /></svg> 
                                     <span class="v-align-middle">Twitter</span>
                                 </a>
                             </li>
-                            <li class="d-inline-block mt-0">
+                            <li class="d-inline-block mt-0 mr-2 mb-2">
                                 <a href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Share on Facebook">
                                     <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-facebook" /></svg> 
                                     <span class="v-align-middle">Facebook</span>
                                 </a>                                
                             </li>
-                            <li class="d-inline-block mt-0">
+                            <li class="d-inline-block mt-0 mr-2 mb-2">
                                 <a href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" class="btn" aria-label="Email this article">
                                     <svg aria-hidden="true" height="16" version="1.1" width="16" class="octicon v-align-middle"><use xlink:href="#logo-email" /></svg> 
                                     <span class="v-align-middle">Email</span>
@@ -141,7 +195,7 @@
 
                 <div class="author my-3">
                     {{ with .Params.author }}
-                        <h4 class="sr-only">Author</h4>
+                        <h3 class="sr-only">Author(s):</h3>
                     {{ end }}
                     {{range .Params.author}}
                     {{- with $.Site.GetPage "taxonomyTerm" (printf "author/%s" (urlize .)) }}
@@ -158,10 +212,18 @@
                         {{end}}
                 </div>
                 <div class="tags">
-                    <h4 class="sr-only">Topics, tags, and collection</h4>
+                    <h3 class="sr-only">Section, topics, tags, and collection</h3>
                     <ul class="pl-0 mb-0 list-style-none clearfix">
+                        {{ range .Params.interest }}
+                        <li class="float-left mt-0  mr-2 mb-2 Truncate">
+                            <a href="{{ "/interest/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article topic quick link">
+                                <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-folder"></use></svg>
+                                <span class="v-align-middle">{{ . | title }}</span>
+                            </a>
+                        </li>
+                        {{ end }}
                         {{ range .Params.topic }}
-                        <li class="float-left mt-0 mr-1 mb-1 Truncate">
+                        <li class="float-left mt-0  mr-2 mb-2 Truncate">
                             <a href="{{ "/topic/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article topic quick link">
                                 <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-tag"></use></svg>
                                 <span class="v-align-middle">{{ . | title }}</span>
@@ -169,7 +231,7 @@
                         </li>
                         {{ end }}
                         {{ range .Params.tags }}
-                        <li class="float-left mt-0 mr-1 mb-1 Truncate">
+                        <li class="float-left mt-0  mr-2 mb-2 Truncate">
                             <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article tag quick link">
                                 <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-tag"></use></svg>
                                 <span class="v-align-middle">{{ . | title }}</span>
@@ -179,7 +241,7 @@
                     </ul>
                     <ul class="pl-0 mb-0 list-style-none clearfix">
                         {{ range .Params.collection }}
-                        <li class="float-left mt-0 mr-1 mb-1 Truncate">
+                        <li class="float-left mt-0  mr-2 mb-2 Truncate">
                             <a href="{{ "/collection/" | relLangURL }}{{ . | urlize }}/" class="btn Truncate-text" type="button" aria-label="article collection quick link">
                                 <svg aria-hidden="true" height="16" width="16" class="octicon v-align-middle"><use xlink:href="#logo-collection"></use></svg>
                                 <span class="v-align-middle ">{{ . | title }}</span>
@@ -189,7 +251,7 @@
                     </ul>
                 </div>
                 <aside class="my-3">
-                    <div >Share this article:</div>
+                    <div class="mb-2">Share this article:</div>
                     <ul class="list-style-none pl-0 mb-0">
                         <li class="d-inline-block mt-0">
                             <a href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" class="btn" aria-label="Share on Twitter">

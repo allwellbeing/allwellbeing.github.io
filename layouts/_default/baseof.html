@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html{{ with site.LanguageCode | default site.Language.Lang }} lang="{{ . }}"{{ end }}>
+<html{{ with site.LanguageCode | default site.Language.Lang }} lang="{{ . }}"{{ end }} data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@primer/css@20.6.0/dist/primer.css">
     <meta name="google-site-verification" content="DmlywITDushGc6Vu8fbK4Ur7M9GCpgiN7aPWRGso9Hg" />
     <meta name="robots" content="notranslate">
+    {{- if not .Site.IsServer -}}
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DZK5V51MWP"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -25,8 +26,10 @@
       gtag('config', 'G-DZK5V51MWP');
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8887263260016839" crossorigin="anonymous"></script>
+    {{- end -}}
+
   </head>
-  <body>
+  <body style="word-wrap: break-word;">
     {{ partial "header.html" . }}
     {{ block "main" . }}{{ end }}
     {{ partial "footer.html" . }}

@@ -1,21 +1,86 @@
 {{ define "meta" }}
-<title>{{ .Title }} &#8212; {{ .Site.Title }}</title>
+<title>{{ .Title | title}} &#8212; {{ .Site.Title }}</title>
 <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
 {{ end }}
 
 {{ define "main" }}
+{{ $url := replace .Permalink ( printf "%s" .Site.BaseURL) "" }}
+{{ $.Scratch.Add "path" .Site.BaseURL }}
+
+{{ $.Scratch.Add "breadcrumb" (slice (dict "url" .Site.BaseURL "name" "home" "position" 1 )) }}
+{{ range $index, $element := split $url "/" }}
+{{ $.Scratch.Add "path" $element }}
+{{ $.Scratch.Add "path" "/" }}
+{{ if ne $element "" }}
+{{ $.Scratch.Add "breadcrumb" (slice (dict "url" ($.Scratch.Get "path") "name" . "position" (add $index 2))) }}
+{{ end }}
+{{ end }}
+<div class="position-sticky top-0 color-bg-inset border-bottom py-1" style="z-index: 2;">
+  <nav aria-label="Breadcrumb" class="f4  pl-3 pl-md-4 pl-lg-5 d-flex flex-items-center flex-justify-between" >
+      <ol  itemscope itemtype="https://schema.org/BreadcrumbList" class="Truncate">
+        {{ range $.Scratch.Get "breadcrumb" }}
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item {{ if lt .position 3 }}Truncate-text--primary{{ end }} {{ if eq .position 3 }} breadcrumb-item-selected{{ end }} Truncate-text ">
+          <a href="{{ .url }}" itemprop="item" class="Truncate-text" {{ if eq .position 3 }}aria-current="page" style="pointer-events:none"{{ end }}>
+            {{ if le .position 1 }}
+            <svg aria-hidden="true" class="octicon" width="18" height="18">
+              <use xlink:href="#logo-house" />
+            </svg>{{ end }}
+            <span itemprop="name" {{ if le .position 1 }} class="d-none d-lg-inline-block"{{ end }}>{{ .name | title}}</span>
+            <meta itemprop="position" content="{{ .position }}" />
+          </a>
+        </li>
+        {{ end }}
+      </ol>
+      <div class="position-relative">
+          <details class="dropdown details-reset details-overlay d-inline-block">
+                  <summary class="btn-octicon pr-4" aria-haspopup="true" type="button" aria-label="Share">
+                    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon color-fg-accent"><use xlink:href="#logo-share" /></svg>
+                  </summary>
+              
+                  <div class="dropdown-menu dropdown-menu-w">
+                    <div class="dropdown-header">Share</div>
+                    <ul>
+                      <li>
+                        <a class="dropdown-item" href="https://twitter.com/intent/tweet?{{.Title | title }}&amp;url={{.Permalink}}" target="_blank" rel="noopener" aria-label="Share on Twitter">
+                          <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                          version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                          <use xlink:href="#logo-twitter" />
+                          </svg>
+                          <span class="v-align-middle">Twitter</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="https://facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                          <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                          version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                          <use xlink:href="#logo-facebook" />
+                          </svg>
+                          <span class="v-align-middle">Facebook</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="mailto:?subject={{.Title|title}}&body={{ .Permalink }}" target="_blank" rel="noopener" aria-label="Share by email">
+                          <svg aria-hidden="true" height="16" viewBox="0 0 16 16"
+                          version="1.1" width="16" class="octicon mr-1 v-align-middle">
+                          <use xlink:href="#logo-email" />
+                          </svg>
+                          <span class="v-align-middle">Email</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </details>
+      </div>
+  </nav>
+</div>
 <div class="clearfix px-3 px-md-4 px-lg-5">
   <div
       class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
       <div class="Layout-main">
-        {{ if .Params.description}}
-        <div class="blankslate">
-          <h1 class="blankslate-heading text-left">
-            {{with .Params.logo}}<svg aria-hidden="true" height="32" viewBox="0 0 16 16" version="1.1" width="32" class="octicon mr-1 v-align-middle color-fg-accent"><use xlink:href="{{.}}" /></svg>{{end}}
-            <span class="v-align-middle">{{ $.Title | title }}</span></h1>
-          <div class="text-left">{{.Content}}</div>
+        <div class="markdown-body my-3 f4-mktg mx-auto">
+          <h1>{{ $.Title | title }}</h1>
+          {{.Content}}
         </div>
-        {{ end }}
         {{ range .Paginator.Pages }}
           <article class="mx-auto py-3  border-bottom" style="max-width: 650px;">
             {{ if .Params.topic }}
