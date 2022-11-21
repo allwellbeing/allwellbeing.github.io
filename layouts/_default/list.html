@@ -4,33 +4,9 @@
 {{ end }}
 
 {{ define "main" }}
-{{ $url := replace .Permalink ( printf "%s" .Site.BaseURL) "" }}
-{{ $.Scratch.Add "path" .Site.BaseURL }}
-
-{{ $.Scratch.Add "breadcrumb" (slice (dict "url" .Site.BaseURL "name" "home" "position" 1 )) }}
-{{ range $index, $element := split $url "/" }}
-{{ $.Scratch.Add "path" $element }}
-{{ $.Scratch.Add "path" "/" }}
-{{ if ne $element "" }}
-{{ $.Scratch.Add "breadcrumb" (slice (dict "url" ($.Scratch.Get "path") "name" . "position" (add $index 2))) }}
-{{ end }}
-{{ end }}
-<div class="position-sticky top-0 color-bg-inset border-bottom py-1" style="z-index: 2;">
-  <nav aria-label="Breadcrumb" class="f4  pl-3 pl-md-4 pl-lg-5 d-flex flex-items-center flex-justify-between" >
-      <ol  itemscope itemtype="https://schema.org/BreadcrumbList" class="Truncate">
-        {{ range $.Scratch.Get "breadcrumb" }}
-        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item {{ if lt .position 3 }}Truncate-text--primary{{ end }} {{ if eq .position 3 }} breadcrumb-item-selected{{ end }} Truncate-text ">
-          <a href="{{ .url }}" itemprop="item" class="Truncate-text" {{ if eq .position 3 }}aria-current="page" style="pointer-events:none"{{ end }} aria-label="Navigate to {{ .name | title}}">
-            {{ if le .position 1 }}
-            <svg aria-hidden="true" class="octicon" width="18" height="18">
-              <use xlink:href="#logo-house" />
-            </svg>{{ end }}
-            <span itemprop="name" {{ if le .position 1 }} class="d-none d-lg-inline-block"{{ end }}>{{ .name | title}}</span>
-            <meta itemprop="position" content="{{ .position }}" />
-          </a>
-        </li>
-        {{ end }}
-      </ol>
+<div class="position-sticky top-0 border-bottom" style="z-index: 2;">
+  <nav class="f4  pl-3 pl-md-4 pl-lg-5 color-bg-inset py-1 d-flex flex-items-center flex-justify-between" >
+      <div class="text-bold">{{.Title |title}}</div>
       <div class="position-relative">
           <details class="dropdown details-reset details-overlay d-inline-block">
                   <summary class="btn-octicon pr-4" aria-haspopup="true" type="button" aria-label="Share">
@@ -77,10 +53,17 @@
   <div
       class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
       <div class="Layout-main">
+        {{- with .Paginator }}
+        {{- $currentPageNumber := .PageNumber }}
+        {{- with .First }}
+        {{- if ne $currentPageNumber .PageNumber }}
+        {{ else }}
         <div class="markdown-body my-3 f4-mktg mx-auto">
           <h1>{{ $.Title | title }}</h1>
-          {{.Content}}
-        </div>
+          {{$.Content}}
+        </div>{{- end }}
+        {{- end }}
+        {{- end }}
         {{ range .Paginator.Pages }}
           <article class="mx-auto py-3  border-bottom" style="max-width: 650px;">
             {{ if .Params.topic }}

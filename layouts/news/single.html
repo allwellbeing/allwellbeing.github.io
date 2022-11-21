@@ -43,7 +43,7 @@
     <nav aria-label="Breadcrumb" class="f4  pl-3 pl-md-4 pl-lg-5 d-flex flex-items-center flex-justify-between" >
         <ol  itemscope itemtype="https://schema.org/BreadcrumbList" class="Truncate">
           <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item Truncate-text Truncate-text--primary">
-            <a href="/" itemprop="item">
+            <a href="/" itemprop="item" aria-label="To front page">
                 <svg aria-hidden="true" class="octicon" width="18" height="18">
                     <use xlink:href="#logo-house" />
                 </svg>
@@ -111,10 +111,8 @@
 <div class="clearfix px-3 px-md-4 px-lg-5">
     <div
         class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end Layout--sidebar-wide">
-        <div class="Layout-main">
-            
-            
-            <article id="article" class="markdown-body pt-3 f4-mktg mx-auto" style="max-width: 590px;" itemscope itemtype="https://schema.org/NewsArticle">
+        <div class="Layout-main">          
+            <article id="article" class="markdown-body pt-3 f4-mktg mx-auto" style="max-width: 590px;" itemscope itemtype="https://schema.org/Article">
                 {{ range .Params.interest }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
                 {{ range .Params.topic }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
                 {{ range .Params.tags }}<meta itemprop="keywords" content="{{ . | title }}"/>{{ end }}
@@ -155,7 +153,7 @@
                         </ul>
                     </aside>
                     {{ with $.Params.images}}
-                    <figure class="mx-0">
+                    <figure class="mr-n3 mr-md-0 ml-n3 ml-md-0">
                         <picture class="mx-auto">
                             <meta itemprop="image" content="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=1000,1000"/>
                             <meta itemprop="image" content="{{ replace ( index . 0 ) "https://" "https://i0.wp.com/" }}?resize=1024,768"/>
@@ -186,7 +184,7 @@
                                 height="730" {{ with $.Params.caption}}alt="{{.}}" {{end}} loading="auto"
                                 class="height-auto ">
                         </picture>
-                        {{ with $.Params.caption}}<figcaption class="color-fg-muted f5">{{.}}</figcaption>{{end}}
+                        {{ with $.Params.caption}}<figcaption class="color-fg-muted f5 mr-3 mr-md-0 ml-3 ml-md-0">{{.}}</figcaption>{{end}}
                     </figure>
                     {{ end }}
                 </header>
