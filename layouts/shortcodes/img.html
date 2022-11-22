@@ -1,4 +1,4 @@
-<figure class="mx-0">
+<figure class="mr-n3 mr-md-0 ml-n3 ml-md-0">
     <picture class="mx-auto">
         <!-- ratio resize for 320px and 2 ratio -->
         <source srcset="{{ replace ( index .Params "src" ) "https://" "https://i0.wp.com/" }}?w=640 640w"
@@ -24,5 +24,5 @@
         <img src='{{ replace ( index .Params "src" ) "https://" "https://i0.wp.com/"  }}' width="1180" height="730"
         alt="{{ index .Params "alt" }}" loading="lazy" class="height-auto ">
     </picture>
-    {{ if isset .Params "alt"}}<figcaption class="color-fg-muted f5">{{ index .Params "alt" }}</figcaption>{{end}}
+    {{ if isset .Params "alt"}}<figcaption class="color-fg-muted f5 mr-3 mr-md-0 ml-3 ml-md-0">{{ index .Params "alt" }}</figcaption>{{end}}
 </figure>
